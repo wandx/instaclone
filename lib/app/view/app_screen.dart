@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instaclone/app/blocs/auth/auth_bloc.dart';
 import 'package:instaclone/app/view/splash_screen.dart';
-import 'package:instaclone/home/home.dart';
 import 'package:instaclone/login/login.dart';
+import 'package:instaclone/post/view/add_post_screen.dart';
+import 'package:instaclone/post/view/post_list_screen.dart';
 
 class AppScreen extends StatelessWidget {
   const AppScreen({Key? key}) : super(key: key);
@@ -30,7 +31,8 @@ class AppScreen extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (_) => const HomeScreen(),
+                // builder: (_) => const HomeScreen(),
+                builder: (_) => const PostListScreen(),
               ),
             );
           }

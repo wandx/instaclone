@@ -17,7 +17,7 @@ class RegisterLoading extends RegisterState {
 class RegisterFailed extends RegisterState {
   final String message;
 
-  RegisterFailed(this.message);
+  const RegisterFailed(this.message);
 
   @override
   List<Object> get props => [];

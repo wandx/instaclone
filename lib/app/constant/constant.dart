@@ -1,0 +1,1 @@
+const String postCollectionName = 'posts';

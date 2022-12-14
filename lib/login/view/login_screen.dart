@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instaclone/home/home.dart';
 import 'package:instaclone/login/bloc/login_bloc.dart';
+import 'package:instaclone/register/register.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => LoginBloc(),
-      child: LoginView(),
+      child: const LoginView(),
     );
   }
 }
@@ -33,7 +34,7 @@ class LoginView extends StatelessWidget {
 
         if (state is LoginSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Login Berhasil'),
               backgroundColor: Colors.green,
             ),
@@ -48,15 +49,18 @@ class LoginView extends StatelessWidget {
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          title: Text('Login'),
+        ),
         body: Form(
           key: context.read<LoginBloc>().formKey,
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Email',
                   ),
                   validator: (v) {
@@ -69,10 +73,10 @@ class LoginView extends StatelessWidget {
                     context.read<LoginBloc>().email = v ?? '';
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextFormField(
                   obscureText: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Password',
                   ),
                   validator: (v) {
@@ -85,11 +89,11 @@ class LoginView extends StatelessWidget {
                     context.read<LoginBloc>().password = v ?? '';
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 BlocBuilder<LoginBloc, LoginState>(
                   builder: (context, state) {
                     if (state is LoginLoading) {
-                      return ElevatedButton(
+                      return const ElevatedButton(
                         onPressed: null,
                         child: SizedBox(
                           width: 15,
@@ -102,10 +106,21 @@ class LoginView extends StatelessWidget {
                       onPressed: () {
                         context.read<LoginBloc>().add(SubmitLogin());
                       },
-                      child: Text('Submit'),
+                      child: const Text('Submit'),
                     );
                   },
                 ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const RegisterScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text('Belum punya akun? register'),
+                )
               ],
             ),
           ),
