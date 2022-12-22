@@ -14,6 +14,11 @@ class PostListLoading extends PostListState {
   List<Object> get props => [];
 }
 
+class PostListUpdated extends PostListState {
+  @override
+  List<Object> get props => [];
+}
+
 class PostListLoaded extends PostListState {
   final List<Post> posts;
 

@@ -14,12 +14,26 @@ class PostListBloc extends Bloc<PostListEvent, PostListState> {
     on<GetPosts>((event, emit) async {
       emit(PostListLoading());
       await postRepository.all().then((posts) {
-        emit(PostListLoaded(posts));
+        allPost
+          ..clear()
+          ..addAll(posts);
+        emit(PostListLoaded([]));
       }).onError((error, stackTrace) {
         emit(PostListLoaded([]));
       });
     });
+
+    on<UpdatePost>((event, emit) {
+      emit(PostListUpdated());
+      print('Update Post Triggered');
+      final postIndex = allPost.indexWhere((e) => e.id == event.post.id);
+      if (postIndex != -1) {
+        allPost[postIndex] = event.post;
+      }
+      emit(PostListLoaded([]));
+    });
   }
 
   final postRepository = PostRepository();
+  final List<Post> allPost = <Post>[];
 }

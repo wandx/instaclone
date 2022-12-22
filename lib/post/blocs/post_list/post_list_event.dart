@@ -13,3 +13,12 @@ class RefreshPosts extends PostListEvent {
   @override
   List<Object?> get props => [];
 }
+
+class UpdatePost extends PostListEvent {
+  final Post post;
+
+  const UpdatePost(this.post);
+
+  @override
+  List<Object?> get props => [post];
+}

@@ -25,14 +25,8 @@ class PostRepository {
     return await cf.collection(constants.postCollectionName).get().then(
       (snapshot) {
         return snapshot.docs.map<Post>((e) {
-          return Post(
-            id: e.id,
-            username: e.data()['username'].toString(),
-            uid: e.data()['uid'].toString(),
-            imageUrl: e.data()['imageUrl'].toString(),
-            caption: e.data()['caption'].toString(),
-            avatarUrl: e.data()['avatarUrl'].toString(),
-          );
+          final post = Post.fromJson(e.data());
+          return post.copyWith(id:e.id);
         }).toList();
       },
     );
