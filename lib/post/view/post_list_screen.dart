@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instaclone/app/blocs/messaging/messaging_cubit.dart';
 import 'package:instaclone/post/blocs/like_post/like_post_bloc.dart';
 import 'package:instaclone/post/blocs/post_list/post_list_bloc.dart';
 
@@ -23,12 +24,31 @@ class PostListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LikePostBloc, LikePostState>(
-      listener: (context, state) {
-        if (state is LikePostSuccess) {
-          context.read<PostListBloc>().add(UpdatePost(state.post));
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<LikePostBloc, LikePostState>(
+          listener: (context, state) {
+            if (state is LikePostSuccess) {
+              context.read<PostListBloc>().add(UpdatePost(state.post));
+            }
+          },
+        ),
+        BlocListener<MessagingCubit, MessagingState>(
+          listener: (context, state) {
+            if (state is MessagingLoaded) {
+              final message = state.message;
+              if (message.data.containsKey('type') &&
+                  message.data['type'] == 'like') {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Your post liked by ${message.data['user']}'),
+                  ),
+                );
+              }
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           title: Text('Posts'),
@@ -96,9 +116,8 @@ class PostListView extends StatelessWidget {
                                         return IconButton(
                                           onPressed: () {
                                             print('Fresh Object');
-                                            context
-                                                .read<LikePostBloc>()
-                                                .add(ToggleLikePost(state.post));
+                                            context.read<LikePostBloc>().add(
+                                                ToggleLikePost(state.post));
                                           },
                                           icon: Builder(builder: (context) {
                                             if (state.post.isLikedByUser) {
